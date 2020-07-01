@@ -36,8 +36,8 @@
                  <img src="../gambar/produk/<?= $row['foto_produk']; ?>" width="100"> 
                 </td>
               	<td>
-              		<a href="" class="btn btn-danger btn-sm">Hapus</a>
-              		<a href="" class="btn btn-info btn-sm">Edit</a>
+              		<a href="index.php?p=hapusproduk&id=<?= $row['id_produk']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ?')">Hapus</a>
+              		<a href="index.php?p=ubahproduk&id=<?= $row['id_produk']; ?>" class="btn btn-info btn-sm">Ubah</a>
               	</td>
               </tr>
               <?php } ?>

@@ -32,8 +32,8 @@
               	<td><?= $row['email_pelanggan']; ?></td>
               	<td><?= $row['telepon_pelanggan']; ?></td>
               	<td>
-              		<a href="" class="btn btn-danger btn-sm">Hapus</a>
-              		<a href="" class="btn btn-info btn-sm">Edit</a>
+              		<a href="index.php?p=hapuspelanggan&id=<?= $row['id_pelanggan']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ?')">Hapus</a>
+              		<a href="index.php?p=ubahpelanggan&id=<?= $row['id_pelanggan']; ?>" class="btn btn-info btn-sm">Ubah</a>
               	</td>
               </tr>
               <?php } ?>

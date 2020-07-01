@@ -13,8 +13,18 @@ Coded by www.creative-tim.com
 * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 -->
 <?php 
+session_start();
 require_once 'config/koneksi.php';
 
+if(!isset($_SESSION['admin'])) {
+  header("Location: login.php");
+  exit;
+}
+
+if(!isset($_GET['p'])) {
+  header("Location: index.php?p=home");
+  exit;
+}
 
 
 ?>
@@ -43,7 +53,11 @@ require_once 'config/koneksi.php';
         echo "Noti Store | Dashboard";
       } else if($_GET['p'] == 'tambah_pelanggan') {
         echo "Tambah Data Pelanggan | Noti Store";
-      }
+      } else if($_GET['p'] == 'ubahproduk') {
+        echo "Ubah Data Produk | Noti Store";
+      } else if($_GET['p'] == 'ubahpelanggan') {
+        echo "Ubah Data Pelanggan | Noti Store";
+      } 
     }
     ?>
   </title>
@@ -189,6 +203,10 @@ require_once 'config/koneksi.php';
                 echo "<a class='navbar-brand' href=''>Dashboard</a>";
               } else if($_GET['p'] == 'tambah_pelanggan') {
                 echo "<a class='navbar-brand' href=''>Tambah Pelanggan</a>";
+              } else if($_GET['p'] == 'ubahproduk') {
+                echo "<a class='navbar-brand' href=''>Ubah Produk</a>";
+              } else if($_GET['p'] == 'ubahpelanggan') {
+                echo "<a class='navbar-brand' href=''>Ubah Pelanggan</a>";
               } 
             }             ?>
             <!-- <a class="navbar-brand" href="javascript:;">Dashboard</a> -->
@@ -224,11 +242,12 @@ require_once 'config/koneksi.php';
                 </div>
               </li>
             </ul>
+            <a href="" class="btn btn-danger btn-sm">Logout</a>
           </div>
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="content">
+      <div class="content" style="height: 100vh;">
         <div class="row">
           <div class="col-md-12">
             <section>
@@ -248,6 +267,16 @@ require_once 'config/koneksi.php';
                 require_once 'home.php';
               } else if($_GET['p'] == 'tambah_pelanggan') {
                 require_once 'pelanggan/tambah_pelanggan.php';
+              } else if($_GET['p'] == 'hapusproduk') {
+                require_once 'produk/hapus_produk.php';
+              } else if($_GET['p'] == 'ubahproduk') {
+                require_once 'produk/ubah_produk.php';
+              } else if($_GET['p'] == 'ubahpelanggan') {
+                require_once 'pelanggan/ubah_pelanggan.php';
+              } else if($_GET['p'] == 'hapuspelanggan') {
+                require_once 'pelanggan/hapus_pelanggan.php';
+              } else if($_GET['p'] == 'logout') {
+                require_once 'logout.php';
               }
             } 
             ?>
@@ -256,7 +285,7 @@ require_once 'config/koneksi.php';
         </div>
       </div>
       <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
-        <div class="container-fluid">
+        <div class="container-fluid mt-5">
           <div class="row">
             <nav class="footer-nav">
               <ul>
