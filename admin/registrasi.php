@@ -1,50 +1,12 @@
 <?php 
-session_start();
-require_once 'config/koneksi.php';
-
-if(isset($_SESSION['admin'])) {
-	header("Location: index.php");
-	exit;
-}
-
-// konfi cookie
-if(isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
-  $id = $_COOKIE['id'];
-  $key = $_COOKIE['key'];
-
-  $cek = $conn->query("SELECT * FROM tb_admin WHERE id_admin = $id") or die(mysqli_error($conn));
-  $row = $cek->fetch_assoc();
-
-  if($key === hash('sha256', $row['username'])) {
-    $_SESSION['admin'] = $row['username'];
+require_once 'produk/function_produk.php';
+if(isset($_POST['register'])) {
+  if(register($_POST) > 0) {
+    echo "<script>alert('Akun Admin Berhasil Dibuat.');window.location='login.php';</script>";
+  } else {
+    echo "<script>alert('Akun Admin Gagal Dibuat.');window.location='login.php';</script>";
   }
 }
-
-if(isset($_POST['login'])) {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
-
-	$result = $conn->query("SELECT * FROM tb_admin WHERE username = '$username'") or die(mysqli_error($conn));
-	
-	if($row = $result->num_rows === 1) {
-		$row = $result->fetch_assoc();
-    if(password_verify($password, $row['password'])) {
-		// buat session
-    $_SESSION['admin'] = $row['username'];
-
-    // pasang cookie
-    if(isset($_POST['remember'])) {
-      setcookie('id', $row['id_admin'], time() + 60);
-      setcookie('key', hash('sha256', $row['username']), time() + 60);
-    }
-
-		header("Location: index.php");
-    exit;
-    }
-	}
-  $error = true;
-}
-
 ?>
 <!doctype html>
 <html lang="en">
@@ -55,7 +17,7 @@ if(isset($_POST['login'])) {
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Login | Noti Store
+    Registrasi | Noti Store
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -88,19 +50,19 @@ if(isset($_POST['login'])) {
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li>
-            <a href="javascript:;">
+            <a href="../">
               <i class="nc-icon nc-bank"></i>
               <p>Kunjungi Website</p>
             </a>
           </li>
-          <li class="active">
-            <a href="javascript:;">
+          <li>
+            <a href="login.php">
               <i class="nc-icon nc-diamond"></i>
               <p>Login</p>
             </a>
           </li>
-          <li>
-            <a href="javascript:;">
+          <li class="active">
+            <a href="registrasi.php">
               <i class="nc-icon nc-pin-3"></i>
               <p>Registrasi</p>
             </a>
@@ -161,17 +123,13 @@ if(isset($_POST['login'])) {
         <div class="row">
           <div class="col-md-12">
             <h3 class="description">Halaman Login</h3>
-            <?php if(isset($error)) : ?>
-              <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
-                  <i class="nc-icon nc-simple-remove"></i>
-                </button>
-                <span><b> Peringatan - </b> Username/Password Anda Salah!</span>
-              </div>
-            <?php endif; ?>
             <div class="card card-user">
 							<div class="card-body">
 								<form action="" method="post">
+                  <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" class="form-control" name="nama_lengkap" placeholder="Masukan nama anda" autofocus="on" required>
+                  </div>
 									<div class="form-group">
 										<label>Username</label>
 										<input type="text" class="form-control" name="username" placeholder="Masukan username anda" autofocus="on" required>
@@ -180,12 +138,12 @@ if(isset($_POST['login'])) {
 										<label>Password</label>
 										<input type="password" class="form-control" name="password" placeholder="Masukan password anda" required>
 									</div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-                    <label class="custom-control-label" for="remember">Ingat Saya</label>
+                  <div class="form-group">
+                    <label>Konfirmasi Password</label>
+                    <input type="password" class="form-control" name="password2" placeholder="Masukan konfirmasi password anda" required>
                   </div>
 									<div class="form-group">
-										<button type="submit" name="login" class="btn btn-danger">Login</button>
+										<button type="submit" name="register" class="btn btn-danger">Registrasi</button>
 									</div>
 								</form>
 						</div>

@@ -66,3 +66,29 @@ function ubah_produk($data) {
 	return mysqli_affected_rows($conn);
 	
 }
+
+
+function register($data) {
+	global $conn;
+	$username = strtolower(htmlspecialchars($data['username']));
+	$password = htmlspecialchars(mysqli_real_escape_string($conn, $data['password']));
+	$password2 = htmlspecialchars(mysqli_real_escape_string($conn, $data['password2']));
+	$nama_lengkap = htmlspecialchars($data['nama_lengkap']);
+
+	// cek apakah username sudah terdaftar ?
+	$cekusername = $conn->query("SELECT * FROM tb_admin WHERE username = '$username'") or die(mysqli_error($conn));
+	if($row = mysqli_fetch_assoc($cekusername)) {
+		echo "<script>alert('Username sudah terdaftar.');window.location='registrasi.php';</script>";
+		return false;
+	}
+
+	// apakah password sama di isi ?
+	if($password != $password2) {
+		echo "<script>alert('Password anda tidak sama, ulangi lagi!.');window.location='registrasi.php';</script>";
+		return false;
+	}
+
+	$password = password_hash($password, PASSWORD_DEFAULT);
+	$query = $conn->query("INSERT INTO tb_admin (username, password, nama_lengkap) VALUES ('$username', '$password', '$nama_lengkap') ") or die(mysqli_error($conn));
+	return mysqli_affected_rows($conn);
+}

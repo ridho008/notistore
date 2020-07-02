@@ -1,4 +1,5 @@
 <?php 
+session_start();
 require_once 'admin/config/koneksi.php';
 
 ?>
@@ -17,7 +18,7 @@ require_once 'admin/config/koneksi.php';
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="admin/assets/demo/demo.css" rel="stylesheet" />
 
-    <title>Hello, world!</title>
+    <title>Noti Store | Toko Online Indonesia</title>
   </head>
   <body>
 
@@ -49,14 +50,20 @@ require_once 'admin/config/koneksi.php';
                   <a class="nav-link" href="index.php">Home</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Keranjang</a>
+                  <a class="nav-link" href="keranjang.php">Keranjang</a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link" href="#">Checkout</a>
+                  <a class="nav-link" href="checkout.php">Checkout</a>
                 </li>
+                <?php if(isset($_SESSION['pelanggan'])) : ?>
                 <li class="nav-item">
-                  <a class="nav-link disabled" href="admin/login,php">Login</a>
+                  <a class="nav-link" href="logout.php">Logout</a>
                 </li>
+                <?php else: ?>
+                  <li class="nav-item">
+                  <a class="nav-link" href="login.php">Login</a>
+                </li>
+              <?php endif; ?>
               </ul>
             <form>
               <div class="input-group no-border">
@@ -81,7 +88,7 @@ require_once 'admin/config/koneksi.php';
       ?>
       <div class="col-md-3">
             <div class="card card-user">
-              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produk']; ?>" alt="Card image cap" height="200">
+              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produk']; ?>" alt="Card image cap">
               <div class="card-body">
                 <div class="author">
                 <a href="#">
@@ -103,7 +110,7 @@ require_once 'admin/config/koneksi.php';
                 <div class="button-container">
                   <div class="row">
                     <div class="col-md-4 col-md-6 col-6 ml-auto mr-auto">
-                      <button class="btn btn-primary">Beli</button>
+                      <a href="beli.php?id=<?= $row['id_produk']; ?>" class="btn btn-primary"><i class="nc-icon nc-cart-simple"></i> Beli</a>
                     </div>
                   </div>
                 </div>

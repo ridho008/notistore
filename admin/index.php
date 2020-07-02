@@ -242,7 +242,7 @@ if(!isset($_GET['p'])) {
                 </div>
               </li>
             </ul>
-            <a href="" class="btn btn-danger btn-sm">Logout</a>
+            <a href="index.php?p=logout" class="btn btn-danger btn-sm">Logout</a>
           </div>
         </div>
       </nav>

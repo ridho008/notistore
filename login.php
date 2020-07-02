@@ -1,51 +1,29 @@
 <?php 
 session_start();
-require_once 'config/koneksi.php';
+require_once 'admin/config/koneksi.php';
 
-if(isset($_SESSION['admin'])) {
-	header("Location: index.php");
-	exit;
-}
-
-// konfi cookie
-if(isset($_COOKIE['id']) && isset($_COOKIE['key'])) {
-  $id = $_COOKIE['id'];
-  $key = $_COOKIE['key'];
-
-  $cek = $conn->query("SELECT * FROM tb_admin WHERE id_admin = $id") or die(mysqli_error($conn));
-  $row = $cek->fetch_assoc();
-
-  if($key === hash('sha256', $row['username'])) {
-    $_SESSION['admin'] = $row['username'];
-  }
+if(isset($_SESSION['pelanggan'])) {
+  header("Location: checkout.php");
+  exit;
 }
 
 if(isset($_POST['login'])) {
-	$username = $_POST['username'];
-	$password = $_POST['password'];
+  $email = htmlspecialchars($_POST['email']);
+  $password = htmlspecialchars($_POST['password']);
 
-	$result = $conn->query("SELECT * FROM tb_admin WHERE username = '$username'") or die(mysqli_error($conn));
-	
-	if($row = $result->num_rows === 1) {
-		$row = $result->fetch_assoc();
-    if(password_verify($password, $row['password'])) {
-		// buat session
-    $_SESSION['admin'] = $row['username'];
-
-    // pasang cookie
-    if(isset($_POST['remember'])) {
-      setcookie('id', $row['id_admin'], time() + 60);
-      setcookie('key', hash('sha256', $row['username']), time() + 60);
-    }
-
-		header("Location: index.php");
-    exit;
-    }
-	}
+  // cek apakah email untuk login ada di DB ?
+  $cekemail = $conn->query("SELECT * FROM tb_pelanggan WHERE email_pelanggan = '$email' AND password_pelanggan = '$password'") or die(mysqli_error($conn));
+  if($cekemail->num_rows === 1) {
+    $row = $cekemail->fetch_assoc();
+    // buat session
+    $_SESSION['pelanggan'] = $row;
+    echo "<script>alert('Anda berhasil login.');window.location='checkout.php';</script>";
+  }
   $error = true;
 }
 
 ?>
+
 <!doctype html>
 <html lang="en">
 
@@ -55,17 +33,17 @@ if(isset($_POST['login'])) {
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Login | Noti Store
+    Login Pengguna | Noti Store
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
   <link href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
   <!-- CSS Files -->
-  <link href="./assets/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="./assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
+  <link href="admin/assets/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="admin/assets/css/paper-dashboard.css?v=2.0.1" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
-  <link href="./assets/demo/demo.css" rel="stylesheet" />
+  <link href="admin/assets/demo/demo.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -73,9 +51,9 @@ if(isset($_POST['login'])) {
     <div class="sidebar" data-color="white" data-active-color="danger">
       <div class="logo">
         <a href="https://www.creative-tim.com" class="simple-text logo-mini">
-          <div class="logo-image-small">
+          <!-- <div class="logo-image-small">
             <img src="../gambar/Profile.jpg">
-          </div>
+          </div> -->
           <!-- <p>CT</p> -->
         </a>
         <a href="https://www.creative-tim.com" class="simple-text logo-normal">
@@ -88,21 +66,15 @@ if(isset($_POST['login'])) {
       <div class="sidebar-wrapper">
         <ul class="nav">
           <li>
-            <a href="javascript:;">
+            <a href="index.php">
               <i class="nc-icon nc-bank"></i>
               <p>Kunjungi Website</p>
             </a>
           </li>
           <li class="active">
-            <a href="javascript:;">
+            <a href="login.php">
               <i class="nc-icon nc-diamond"></i>
               <p>Login</p>
-            </a>
-          </li>
-          <li>
-            <a href="javascript:;">
-              <i class="nc-icon nc-pin-3"></i>
-              <p>Registrasi</p>
             </a>
           </li>
         </ul>
@@ -120,7 +92,7 @@ if(isset($_POST['login'])) {
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="javascript:;">Login</a>
+            <a class="navbar-brand" href="javascript:;">Login Pengguna</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -160,7 +132,7 @@ if(isset($_POST['login'])) {
       <div class="content">
         <div class="row">
           <div class="col-md-12">
-            <h3 class="description">Halaman Login</h3>
+            <h3 class="description">Halaman Login Pengguna</h3>
             <?php if(isset($error)) : ?>
               <div class="alert alert-danger alert-dismissible fade show">
                 <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
@@ -173,8 +145,8 @@ if(isset($_POST['login'])) {
 							<div class="card-body">
 								<form action="" method="post">
 									<div class="form-group">
-										<label>Username</label>
-										<input type="text" class="form-control" name="username" placeholder="Masukan username anda" autofocus="on" required>
+										<label>Email</label>
+										<input type="text" class="form-control" name="email" placeholder="Masukan username anda" autofocus="on" required>
 									</div>
 									<div class="form-group">
 										<label>Password</label>
@@ -214,18 +186,18 @@ if(isset($_POST['login'])) {
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="./assets/js/core/jquery.min.js"></script>
-  <script src="./assets/js/core/popper.min.js"></script>
-  <script src="./assets/js/core/bootstrap.min.js"></script>
-  <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <script src="admin/assets/js/core/jquery.min.js"></script>
+  <script src="admin/assets/js/core/popper.min.js"></script>
+  <script src="admin/assets/js/core/bootstrap.min.js"></script>
+  <script src="admin/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
   <!--  Google Maps Plugin    -->
   <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
   <!-- Chart JS -->
-  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <script src="admin/assets/js/plugins/chartjs.min.js"></script>
   <!--  Notifications Plugin    -->
-  <script src="./assets/js/plugins/bootstrap-notify.js"></script>
+  <script src="admin/assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="./assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
+  <script src="admin/assets/js/paper-dashboard.min.js?v=2.0.1" type="text/javascript"></script>
 </body>
 
 </html>
