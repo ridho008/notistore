@@ -17,7 +17,7 @@ if(isset($_POST['login'])) {
     $row = $cekemail->fetch_assoc();
     // buat session
     $_SESSION['pelanggan'] = $row;
-    echo "<script>alert('Anda berhasil login.');window.location='checkout.php';</script>";
+    echo "<script>alert('Anda berhasil login.');window.location='index.php';</script>";
   }
   $error = true;
 }

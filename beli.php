@@ -11,8 +11,13 @@ if(isset($_SESSION['keranjang'][$id_produk])) {
 	$_SESSION['keranjang'][$id_produk] = 1;
 }
 
+if(!isset($_SESSION['pelanggan'])) {
+	echo "<script>alert('Silahkan login terlebih dahulu.');window.location='login.php';</script>";
+} else {
+	echo "<script>alert('Produk telah masuk ke keranjang belanja anda.');window.location='keranjang.php';</script>";
+}
+
 // var_dump($_SESSION);
 // redirect ke halaman keranjang.php
-echo "<script>alert('Produk telah masuk ke keranjang belanja anda.');window.location='keranjang.php';</script>";
 
 ?>
