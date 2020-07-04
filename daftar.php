@@ -1,29 +1,27 @@
 <?php 
-session_start();
 require_once 'admin/config/koneksi.php';
 
-if(isset($_SESSION['pelanggan'])) {
-  header("Location: checkout.php");
-  exit;
-}
-
-if(isset($_POST['login'])) {
+if(isset($_POST['daftar'])) {
+  $nama = htmlspecialchars($_POST['nama']);
   $email = htmlspecialchars($_POST['email']);
   $password = htmlspecialchars($_POST['password']);
+  $alamat = htmlspecialchars($_POST['alamat']);
+  $telepon = htmlspecialchars($_POST['telepon']);
 
-  // cek apakah email untuk login ada di DB ?
-  $cekemail = $conn->query("SELECT * FROM tb_pelanggan WHERE email_pelanggan = '$email' AND password_pelanggan = '$password'") or die(mysqli_error($conn));
-  if($cekemail->num_rows === 1) {
-    $row = $cekemail->fetch_assoc();
-    // buat session
-    $_SESSION['pelanggan'] = $row;
-    echo "<script>alert('Anda berhasil login.');window.location='index.php';</script>";
+  // apakah email sudah terdaftar ?
+  $cekEmail = $conn->query("SELECT * FROM tb_pelanggan WHERE email_pelanggan = '$email'") or die(mysqli_error($conn));
+  $rowEmail = $cekEmail->num_rows;
+  if($rowEmail == 1) {
+    echo "<script>alert('Email sudah terdaftar.');window.location='daftar.php';</script>";
+    return false;
   }
-  $error = true;
+
+  $queryDaftar = $conn->query("INSERT INTO tb_pelanggan (email_pelanggan, password_pelanggan, nama_pelanggan, telepon_pelanggan, alamat_pelanggan) VALUES ('$email', '$password', '$nama', '$telepon', '$alamat') ") or die(mysqli_error($conn));
+
+  echo "<script>alert('Anda berhasil membuat akun, silahkan login.');window.location='login.php';</script>";
 }
 
 ?>
-
 <!doctype html>
 <html lang="en">
 
@@ -33,7 +31,7 @@ if(isset($_POST['login'])) {
   <link rel="icon" type="image/png" href="./assets/img/favicon.png">
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
   <title>
-    Login Pengguna | Noti Store
+    Daftar Pengguna | Noti Store
   </title>
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
   <!--     Fonts and icons     -->
@@ -47,10 +45,10 @@ if(isset($_POST['login'])) {
 </head>
 
 <body class="">
-  <div class="wrapper ">
+  <div class="wrapper">
     <!-- SIDEBAR HALAMAN DAFTAR DAN LOGIN PENGGUNA -->
     <?php require_once 'themeplates/lodapeng/sidebar.php'; ?>
-    <div class="main-panel" style="height: 100vh;">
+    <div class="main-panel">
       <!-- Navbar -->
       <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
         <div class="container-fluid">
@@ -62,7 +60,7 @@ if(isset($_POST['login'])) {
                 <span class="navbar-toggler-bar bar3"></span>
               </button>
             </div>
-            <a class="navbar-brand" href="javascript:;">Login Pengguna</a>
+            <a class="navbar-brand" href="javascript:;">Daftar Pengguna</a>
           </div>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-bar navbar-kebab"></span>
@@ -102,32 +100,32 @@ if(isset($_POST['login'])) {
       <div class="content">
         <div class="row">
           <div class="col-md-12">
-            <h3 class="description">Halaman Login Pengguna</h3>
-            <?php if(isset($error)) : ?>
-              <div class="alert alert-danger alert-dismissible fade show">
-                <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
-                  <i class="nc-icon nc-simple-remove"></i>
-                </button>
-                <span><b> Peringatan - </b> Username/Password Anda Salah!</span>
-              </div>
-            <?php endif; ?>
+            <h3 class="description">Halaman Daftar Pengguna</h3>
             <div class="card card-user">
 							<div class="card-body">
 								<form action="" method="post">
 									<div class="form-group">
-										<label>Email</label>
-										<input type="text" class="form-control" name="email" placeholder="Masukan username anda" autofocus="on" required>
+										<label for="nama">Nama</label>
+										<input type="text" class="form-control" name="nama" placeholder="Masukan nama anda" autofocus="on" required autofocus="on">
 									</div>
-									<div class="form-group">
-										<label>Password</label>
-										<input type="password" class="form-control" name="password" placeholder="Masukan password anda" required>
-									</div>
-                  <div class="custom-control custom-checkbox">
-                    <input type="checkbox" class="custom-control-input" id="remember" name="remember">
-                    <label class="custom-control-label" for="remember">Ingat Saya</label>
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Masukan email anda" required>
                   </div>
 									<div class="form-group">
-										<button type="submit" name="login" class="btn btn-danger">Login</button>
+										<label for="password">Password</label>
+										<input type="password" class="form-control" name="password" placeholder="Masukan password anda" required>
+									</div>
+                  <div class="form-group">
+                    <label for="alamat">Alamat</label>
+                    <textarea name="alamat" id="alamat" cols="30" rows="10" class="form-control" placeholder="Masukan alamat lengkap anda..." required></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="telepon">Telepon</label>
+                    <input type="number" name="telepon" id="telepon" required class="form-control">
+                  </div>
+									<div class="form-group">
+										<button type="submit" name="daftar" class="btn btn-danger">Daftar</button>
 									</div>
 								</form>
 						</div>
