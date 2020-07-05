@@ -9,6 +9,8 @@ if(!isset($_SESSION['pelanggan'])) {
 }
 
 
+
+
 ?>
 <!-- <pre>
   <?php 
@@ -47,13 +49,24 @@ if(!isset($_SESSION['pelanggan'])) {
             <a href="checkout.php" class="btn btn-info">Checkout</a>
             </div> -->
           <h4 class="card-title">Detail Pembelian</h4>
+          
           <hr>
           </div>
           <?php 
           $idD = $_GET['id'];
-          $detailPembelian = $conn->query("SELECT * FROM tb_pembelian JOIN tb_pelanggan ON tb_pembelian.id_pelanggan = tb_pelanggan.id_pelanggan JOIN tb_ongkir ON tb_ongkir.id_ongkir WHERE tb_pembelian.id_pembelian = $idD") or die(mysqli_error($conn));
+          $detailPembelian = $conn->query("SELECT * FROM tb_pembelian JOIN tb_pelanggan ON tb_pembelian.id_pelanggan = tb_pelanggan.id_pelanggan WHERE tb_pembelian.id_pembelian = $idD") or die(mysqli_error($conn));
           $detail = $detailPembelian->fetch_assoc();
+
+          // jika user mengakses sembarangan id nota.php melalui url, akan di pindahkan ke riwayat. jadi jika id_pelanggan tidak sama dengan id_pelanggan yang login akan di redirect.
+          $idPelangganYgBeli = $detail['id_pelanggan'];
+          $idPelangganLogin = $_SESSION['pelanggan']['id_pelanggan'];
+          if($idPelangganYgBeli != $idPelangganLogin) {
+            header("Location: riwayat.php");
+            exit;
+          }
           ?>
+          <!-- <pre><?php var_dump($detail) ?></pre> -->
+          <!-- <pre><?php var_dump($_SESSION) ?></pre> -->
           <div class="card-body">
                 <div class="places-buttons">
                   <div class="row">

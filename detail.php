@@ -65,10 +65,12 @@ print_r($pecahDetail);
 								<hr>
 								<h6>Rp. <?= number_format($pecahDetail['harga_produk']); ?></h6>
 								<hr>
+								<h6>Stok <?= $pecahDetail['stok_produk']; ?></h6>
+								<hr>
 								<form action="" method="post">
 									<div class="form-group col-md-6">
 										<div class="input-group">
-											<input type="number" class="form-control" min="1" name="jumlah">
+											<input type="number" class="form-control" min="1" name="jumlah" max="<?= $pecahDetail['stok_produk']; ?>">
 											<div class="input-group-btn">
 												<button type="submit" name="beli" class="btn btn-primary">Beli</button>
 											</div>

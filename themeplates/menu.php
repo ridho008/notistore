@@ -30,6 +30,9 @@
                 <li class="nav-item">
                   <a class="nav-link" href="checkout.php">Checkout</a>
                 </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="riwayat.php">Riwayat</a>
+                </li>
                 <?php if(isset($_SESSION['pelanggan'])) : ?>
                 <li class="nav-item">
                   <a class="nav-link" href="logout.php">Logout</a>

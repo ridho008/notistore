@@ -3,10 +3,10 @@ session_start();
 require_once 'admin/config/koneksi.php';
 $keranjang = @$_SESSION['keranjang'];
 
-if(!isset($_SESSION['pelanggan'])) {
-  header("Location: login.php");
-  exit;
-}
+// if(!isset($_SESSION['pelanggan'])) {
+//   header("Location: login.php");
+//   exit;
+// }
 
 // jika user akses halaman keranjang
 if(empty($_SESSION['keranjang'])) {

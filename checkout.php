@@ -182,6 +182,9 @@ if(isset($_POST['checkout'])) {
     $subharga = $perproduk['harga_produk'] * $jumlah;
 
     $conn->query("INSERT INTO tb_pembelian_produk (id_pembelian, id_produk, jumlah, nama, harga, berat, subberat, subharga) VALUES('$id_pembelian_barusan', '$id_produk', '$jumlah', '$nama', '$harga', '$berat', '$subberat', '$subharga')") or die(mysqli_error($conn));
+
+    // mengurangi jumlah stok yg sudah di beli
+    $conn->query("UPDATE tb_produk SET stok_produk = stok_produk -$jumlah WHERE id_produk = '$id_produk'") or die(mysqli_error($conn));
   }
 
   // mengkosongkan keranjang belanja
