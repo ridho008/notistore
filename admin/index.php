@@ -57,6 +57,8 @@ if(!isset($_GET['p'])) {
         echo "Ubah Data Produk | Noti Store";
       } else if($_GET['p'] == 'ubahpelanggan') {
         echo "Ubah Data Pelanggan | Noti Store";
+      } else if($_GET['p'] == 'pembayaran') {
+        echo "Pembayaran | Noti Store";
       } 
     }
     ?>
@@ -207,6 +209,8 @@ if(!isset($_GET['p'])) {
                 echo "<a class='navbar-brand' href=''>Ubah Produk</a>";
               } else if($_GET['p'] == 'ubahpelanggan') {
                 echo "<a class='navbar-brand' href=''>Ubah Pelanggan</a>";
+              } else if($_GET['p'] == 'pembayaran') {
+                echo "<a class='navbar-brand' href=''>Pembayaran</a>";
               } 
             }             ?>
             <!-- <a class="navbar-brand" href="javascript:;">Dashboard</a> -->
@@ -247,7 +251,7 @@ if(!isset($_GET['p'])) {
         </div>
       </nav>
       <!-- End Navbar -->
-      <div class="content" style="height: 100vh;">
+      <div class="content">
         <div class="row">
           <div class="col-md-12">
             <section>
@@ -277,6 +281,8 @@ if(!isset($_GET['p'])) {
                 require_once 'pelanggan/hapus_pelanggan.php';
               } else if($_GET['p'] == 'logout') {
                 require_once 'logout.php';
+              } else if($_GET['p'] == 'pembayaran') {
+                require_once 'pembayaran.php';
               }
             } 
             ?>

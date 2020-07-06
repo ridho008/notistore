@@ -13,6 +13,7 @@
               <th>No</th>
               <th>Nama Pelanggan</th>
               <th>Tanggal</th>
+              <th>Status</th>
               <th>Total</th>
               <th>Aksi</th>
               <!-- <th class="text-right">
@@ -29,10 +30,14 @@
               	<td><?= $no++; ?></td>
               	<td><?= $row['nama_pelanggan']; ?></td>
               	<td><?= $row['tgl_pembelian']; ?></td>
+                <td><?= $row['status_pembelian']; ?></td>
               	<td><?= $row['total_pembelian']; ?></td>
               	<td>
-              		<a href="index.php?p=detail&id=<?= $row['id_pembelian'] ?>" class="btn btn-danger btn-sm">Details</a>
-              		<a href="" class="btn btn-info btn-sm">Edit</a>
+              		<a href="index.php?p=detail&id=<?= $row['id_pembelian'] ?>" class="btn btn-info btn-sm">Details</a>
+                  <!-- jika user sudah mengirim buktu pembayaran -->
+              		<?php if($row['status_pembelian'] == 'Bukti terkirim') : ?>
+                  <a href="index.php?p=pembayaran&id=<?= $row['id_pembelian']; ?>" class="btn btn-success btn-sm mt-1">Pembayaran</a>
+                  <?php endif; ?>
               	</td>
               </tr>
               <?php } ?>

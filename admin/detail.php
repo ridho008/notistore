@@ -11,29 +11,41 @@ $detail = $detailPembelian->fetch_assoc();
 ?>
 
 <div class="row">
-          <div class="col-md-12">
-            <div class="card">
-              <div class="card-body">
-                <div class="places-buttons">
-                  <div class="row">
-                    <div class="col-md-6 ml-auto mr-auto text-center">
-								    <h5 class="card-title">Nama : <?= $detail['nama_pelanggan'] ?></h5>
-								    <h5 class="card-title">Email : <?= $detail['email_pelanggan'] ?></h5>
-								    <h5 class="card-title">Tanggal : <?= $detail['tgl_pembelian'] ?></h5>
-								    <h5 class="card-title">Total : <?= $detail['total_pembelian'] ?></h5>
-								  </div>
-                  </div> <!-- endrow -->
-                    	
-                    		
-                    	
-                      
-                  </div>	
-                </div>
-              </div>
-            </div>
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4">
+            <h5>Pembelian</h5>
+            <p>
+              Tanggal : <?= $detail['tgl_pembelian']; ?><br>
+              Total : <?= $detail['total_pembelian'] ?><br>
+              Status : <?= $detail['status_pembelian']; ?>
+            </p>
           </div>
+          <div class="col-md-4">
+            <h5>Pelanggan</h5>
+            <b><?= $detail['nama_pelanggan']; ?></b>
+            <p>
+              <?= $detail['telepon_pelanggan']; ?><br>
+              <?= $detail['email_pelanggan'] ?>
+            </p>
+          </div>
+          <div class="col-md-4">
+            <h5>Pengiriman</h5>
+            <b><?= $detail['nama_kota']; ?></b><br>
+            <p>
+              Tarif : Rp. <?= number_format($detail['tarif']); ?><br>
+              Alamat : <?= $detail['alamat_pengiriman']; ?> 
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<div class="row">
+<div class="row" style="height: 100vh;">
 	<div class="col-md-12">
 		<div class="card">
 			<div class="card-body">
@@ -55,10 +67,10 @@ $detail = $detailPembelian->fetch_assoc();
               <tr>
               	<td><?= $no++; ?></td>
 								<td><?= $row['nama_produk']; ?></td>
-								<td><?= $row['harga_produk']; ?></td>
+								<td>Rp. <?= number_format($row['harga_produk']); ?></td>
 								<td><?= $row['jumlah']; ?></td>
 								<td>
-									<?= $row['harga_produk'] * $row['jumlah']; ?>
+									<?= number_format($row['harga_produk'] * $row['jumlah']); ?>
 								</td>
 							</tr>
             	<?php } ?>

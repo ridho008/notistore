@@ -64,7 +64,12 @@ if(!isset($_SESSION['pelanggan'])) {
                   <tr>
                     <td><?= $no++; ?></td>
                     <td><?= $pecah['tgl_pembelian']; ?></td>
-                    <td><?= $pecah['status_pembelian']; ?></td>
+                    <td>
+                      <?= $pecah['status_pembelian']; ?><br>
+                      <?php if(!empty($pecah['resi_pengiriman'])) : ?>
+                        Resi : <?= $pecah['resi_pengiriman']; ?>
+                      <?php endif; ?>
+                      </td>
                     <td>Rp. <?= number_format($pecah['total_pembelian']); ?></td>
                     <td>
                       <a href="nota.php?id=<?= $pecah['id_pembelian']; ?>" class="btn btn-success btn-sm">Nota</a>
