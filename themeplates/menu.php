@@ -48,12 +48,14 @@
               </ul>
             <form>
               <div class="input-group no-border">
-                <input type="text" value="" class="form-control" placeholder="Search...">
-                <div class="input-group-append">
-                  <div class="input-group-text">
-                    <i class="nc-icon nc-zoom-split"></i>
+                <form action="pencarian.php" method="get">
+                  <input type="text" class="form-control" placeholder="Cari..." name="keyword">
+                  <div class="input-group-append">
+                    <div class="input-group-text">
+                      <button type="submit" class="btn btn-primary btn-sm">Cari</button>
+                    </div>
                   </div>
-                </div>
+                </form>
               </div>
             </form>
           </div>

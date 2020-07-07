@@ -35,7 +35,7 @@
               	<td>
               		<a href="index.php?p=detail&id=<?= $row['id_pembelian'] ?>" class="btn btn-info btn-sm">Details</a>
                   <!-- jika user sudah mengirim buktu pembayaran -->
-              		<?php if($row['status_pembelian'] == 'Bukti terkirim') : ?>
+              		<?php if($row['status_pembelian'] !== 'pending') : ?>
                   <a href="index.php?p=pembayaran&id=<?= $row['id_pembelian']; ?>" class="btn btn-success btn-sm mt-1">Pembayaran</a>
                   <?php endif; ?>
               	</td>

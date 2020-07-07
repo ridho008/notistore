@@ -13,6 +13,13 @@ $id = $_GET['id'];
 $query = $conn->query("SELECT * FROM tb_produk WHERE id_produk =$id") or die(mysqli_error($conn));
 $row = $query->fetch_assoc();
 
+// menampilkan kategori
+$dataKategori = [];
+$ambil = $conn->query("SELECT * FROM tb_kategori") or die(mysqli_error($conn));
+while ($pecah = $ambil->fetch_assoc()) {
+	$dataKategori[] = $pecah;
+}
+
 ?>
 <h3 class="description">Ubah Data Produk</h3>
 
@@ -21,6 +28,20 @@ $row = $query->fetch_assoc();
   <div class="card card-user">
 		<div class="card-body">
 			<form action="" method="post" enctype="multipart/form-data">
+			<div class="form-group">
+				<label for="kategori">Kategori</label>
+				<select name="kategori" id="kategori" class="form-control">
+					<option value="">Pilih Kategori</option>
+					<?php foreach($dataKategori as $key => $value) : ?>
+					<option value="<?= $value['id_kategori'] ?>" <?php
+					if($value['id_kategori'] == $value['id_kategori']){
+						echo 'selected';
+					} ?>>
+						<?= $value['nama_kategori']; ?>
+					</option>
+					<?php endforeach; ?>
+				</select>
+			</div>	
 			<div class="form-group">
 				<label>Nama Produk</label>
 				<input type="hidden" name="id_produk" value="<?= $row['id_produk']; ?>">
@@ -34,6 +55,10 @@ $row = $query->fetch_assoc();
 			<div class="form-group">
 				<label>Berat (KG)</label>
 				<input type="number" class="form-control" name="berat_produk" placeholder="Masukan berat produk" required value="<?= $row['berat_produk']; ?>">
+			</div>
+			<div class="form-group">
+				<label>Stok Produk</label>
+				<input type="number" class="form-control" name="stok" placeholder="Masukan stok produk" required value="<?= $row['stok_produk']; ?>">
 			</div>
 			<div class="form-group">
 				<label>Foto (Klik Tulisan Foto)</label>

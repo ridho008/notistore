@@ -7,6 +7,8 @@ if(!isset($_SESSION['pelanggan'])) {
   exit;
 }
 
+
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -73,7 +75,11 @@ if(!isset($_SESSION['pelanggan'])) {
                     <td>Rp. <?= number_format($pecah['total_pembelian']); ?></td>
                     <td>
                       <a href="nota.php?id=<?= $pecah['id_pembelian']; ?>" class="btn btn-success btn-sm">Nota</a>
+                      <?php if($pecah['status_pembelian'] == 'pending') : ?>
                       <a href="pembayaran.php?id=<?= $pecah['id_pembelian']; ?>" class="btn btn-info btn-sm">Pembayaran</a>
+                      <?php else : ?>
+                        <a href="lihat_pembayaran.php?id=<?= $pecah['id_pembelian']; ?>" class="btn btn-warning btn-sm">Lihat Pembayaran</a>
+                      <?php endif; ?>
                     </td>
                   </tr>
                   <?php } ?>

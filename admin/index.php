@@ -59,6 +59,10 @@ if(!isset($_GET['p'])) {
         echo "Ubah Data Pelanggan | Noti Store";
       } else if($_GET['p'] == 'pembayaran') {
         echo "Pembayaran | Noti Store";
+      } else if($_GET['p'] == 'laporan_pembelian') {
+        echo "Laporan Pembelian | Noti Store";
+      } else if($_GET['p'] == 'kategori') {
+        echo "Kategori Produk | Noti Store";
       } 
     }
     ?>
@@ -106,6 +110,25 @@ if(!isset($_GET['p'])) {
             <a href="index.php?p=home">
               <i class="nc-icon nc-shop"></i>
               <p>Dashboard</p>
+            </a>
+          </li>
+          <?php  
+          } ?>
+          <?php } ?>
+
+          <?php if(isset($_GET['p'])) { ?>
+          <?php if($_GET['p'] == 'kategori') { ?>
+          <li class="active">
+            <a href="index.php?p=kategori">
+              <i class="nc-icon nc-bag-16"></i>
+              <p>Kategori</p>
+            </a>
+          </li>
+          <?php } else { ?>
+          <li>
+            <a href="index.php?p=kategori">
+              <i class="nc-icon nc-bag-16"></i>
+              <p>Kategori</p>
             </a>
           </li>
           <?php  
@@ -168,6 +191,24 @@ if(!isset($_GET['p'])) {
           <?php  
             } ?>
           <?php } ?>
+          <?php if(isset($_GET['p'])) { ?>
+          <?php if($_GET['p'] == 'laporan_pembelian') { ?>
+          <li class="active">
+            <a href="index.php?p=laporan_pembelian">
+              <i class="nc-icon nc-single-02"></i>
+              <p>Laporan</p>
+            </a>
+          </li>
+          <?php } else { ?>
+          <li>
+            <a href="index.php?p=laporan_pembelian">
+              <i class="nc-icon nc-single-02"></i>
+              <p>Laporan</p>
+            </a>
+          </li>
+          <?php  
+            } ?>
+          <?php } ?>
           <li>
             <a href="index.php?p=logout">
               <i class="nc-icon nc-button-power"></i>
@@ -211,6 +252,10 @@ if(!isset($_GET['p'])) {
                 echo "<a class='navbar-brand' href=''>Ubah Pelanggan</a>";
               } else if($_GET['p'] == 'pembayaran') {
                 echo "<a class='navbar-brand' href=''>Pembayaran</a>";
+              } else if($_GET['p'] == 'laporan_pembelian') {
+                echo "<a class='navbar-brand' href=''>Laporan Pembelian</a>";
+              } else if($_GET['p'] == 'kategori') {
+                echo "<a class='navbar-brand' href=''>Kategori Produk</a>";
               } 
             }             ?>
             <!-- <a class="navbar-brand" href="javascript:;">Dashboard</a> -->
@@ -283,6 +328,10 @@ if(!isset($_GET['p'])) {
                 require_once 'logout.php';
               } else if($_GET['p'] == 'pembayaran') {
                 require_once 'pembayaran.php';
+              } else if($_GET['p'] == 'laporan_pembelian') {
+                require_once 'laporan/laporan_pembelian.php';
+              } else if($_GET['p'] == 'kategori') {
+                require_once 'kategori/kategori.php';
               }
             } 
             ?>

@@ -13,6 +13,7 @@
             <thead class=" text-primary">
               <th>No</th>
               <th>Nama Produk</th>
+              <th>Kategori</th>
               <th>Harga</th>
               <th>Berat</th>
               <th>Foto</th>
@@ -24,12 +25,13 @@
             <tbody>
               <?php 
               $no = 1;
-              $produk = $conn->query("SELECT * FROM tb_produk") or die(mysqli_error($conn));
+              $produk = $conn->query("SELECT * FROM tb_produk JOIN tb_kategori ON tb_produk.id_kategori = tb_kategori.id_kategori") or die(mysqli_error($conn));
               while($row = $produk->fetch_assoc()) {
               ?>
               <tr>
               	<td><?= $no++; ?></td>
               	<td><?= $row['nama_produk']; ?></td>
+                <td><?= $row['nama_kategori']; ?></td>
               	<td><?= $row['harga_produk']; ?></td>
               	<td><?= $row['berat_produk']; ?></td>
               	<td>

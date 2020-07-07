@@ -2,7 +2,20 @@
 session_start();
 require_once 'admin/config/koneksi.php';
 
+$keyword = $_GET['keyword'];
+// echo $keyword;
+$semuaData = [];
+$ambil = $conn->query("SELECT * FROM tb_produk WHERE 
+  nama_produk LIKE '%$keyword%' OR
+  deskripsi_produk LIKE '%$keyword%'
+  ") or die(mysqli_error($conn));
+while($pecah = $ambil->fetch_assoc()) {
+  $semuaData[] = $pecah;
+}
 
+// echo "<pre>";
+// var_dump($semuaData);
+// echo "</pre>";
 ?>
 <!doctype html>
 <html lang="en">
@@ -25,92 +38,40 @@ require_once 'admin/config/koneksi.php';
 
 <div class="main-panel" style="width: 100%;">
 <!-- Navbar/Menu.php -->
-<!-- <?php require_once 'themeplates/menu.php'; ?> -->
-<!-- Navbar -->
-      <nav class="navbar navbar-expand-lg navbar-absolute fixed-top navbar-transparent">
-        <div class="container-fluid">
-          <div class="navbar-wrapper">
-            <div class="navbar-toggle">
-              <button type="button" class="navbar-toggler">
-                <span class="navbar-toggler-bar bar1"></span>
-                <span class="navbar-toggler-bar bar2"></span>
-                <span class="navbar-toggler-bar bar3"></span>
+<?php require_once 'themeplates/menu.php'; ?>
+
+<div class="content">
+      
+      <div class="row">
+        <div class="col-md-6">
+          <?php if(empty($semuaData)) : ?>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              <strong><?= $keyword; ?></strong> tidak ditemukan.
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <a class="navbar-brand" href="index.php">NOTI STORE</a>
-            <div class="collapse navbar-collapse" id="navbarNav">
-              
-            </div>
-          </div>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-            <span class="navbar-toggler-bar navbar-kebab"></span>
-          </button>
-          <div class="collapse navbar-collapse justify-content-end" id="navigation">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                  <a class="nav-link" href="index.php">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="keranjang.php">Keranjang</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="checkout.php">Checkout</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="riwayat.php">Riwayat</a>
-                </li>
-                <?php if(isset($_SESSION['pelanggan'])) : ?>
-                <li class="nav-item">
-                  <a class="nav-link" href="logout.php">Logout</a>
-                </li>
-                <?php else: ?>
-                  <li class="nav-item">
-                  <a class="nav-link" href="login.php">Login</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" href="daftar.php">Daftar</a>
-                </li>
-              <?php endif; ?>
-              </ul>
-            <form>
-              <div class="input-group no-border">
-                <form action="pencarian.php" method="get">
-                  <input type="text" class="form-control" placeholder="Cari..." name="keyword">
-                  <div class="input-group-append">
-                    <div class="input-group-text">
-                      <button type="submit" class="btn btn-primary btn-sm">Cari</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </form>
-          </div>
+            <?php else : ?>
+              <h4>Hasil Pencarian <?= $keyword; ?></h4>
+          <?php endif; ?>
         </div>
-      </nav>
-      <!-- End Navbar -->
-
-  <div class="content">
+      </div>
     <div class="row">
-      <?php 
-      $result = $conn->query("SELECT * FROM tb_produk") or die(mysqli_error($conn));
-      while($row = $result->fetch_assoc()) {
-      ?>
+      <?php foreach($semuaData as $key => $value) : ?>
       <div class="col-md-3">
             <div class="card card-user">
-              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produks']; ?>" alt="Card image cap">
+              <img class="card-img-top" src="gambar/produk/<?= $value['foto_produk']; ?>" alt="Card image cap" width="300">
               <div class="card-body">
                 <div class="author">
                 <a href="#">
-                    <img class="avatar border-gray" src="gambar/Profiles.jpg" alt="...">
-                    <h5 class="title"><?= $row['nama_produk']; ?></h5>
+                    <img class="avatar border-gray" src="gambar/Profile.jpg" alt="...">
+                    <h5 class="title"><?= $value['nama_produk']; ?></h5>
                   </a>
-                <p class="card-text"><?= $row['deskripsi_produk']; ?></p>
+                <p class="card-text"><?= $value['deskripsi_produk']; ?></p>
                 </div>
                 <div class="col-md text-center">
                   <btn class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="nc-icon nc-tag-content"></i></btn>
-                  <span class="text-muted"><small>Rp.<?= number_format($row['harga_produk']); ?></small></span>
+                  <span class="text-muted"><small>Rp.<?= number_format($value['harga_produk']); ?></small></span>
                 </div>
                 <div class="col-md-3 col-3 text-right">
                         
@@ -121,8 +82,8 @@ require_once 'admin/config/koneksi.php';
                 <div class="button-container">
                   <div class="row">
                     <div class="ml-auto mr-auto">
-                      <a href="beli.php?id=<?= $row['id_produk']; ?>" class="btn btn-primary mt-1"><i class="nc-icon nc-cart-simple"></i> Beli</a>
-                      <a href="detail.php?id=<?= $row['id_produk']; ?>" class="btn btn-secondary mt-1"><i class="nc-icon nc-cart-simple"></i> Detail</a>
+                      <a href="beli.php?id=<?= $value['id_produk']; ?>" class="btn btn-primary mt-1"><i class="nc-icon nc-cart-simple"></i> Beli</a>
+                      <a href="detail.php?id=<?= $value['id_produk']; ?>" class="btn btn-secondary mt-1"><i class="nc-icon nc-cart-simple"></i> Detail</a>
                     </div>
                   </div>
                 </div>
@@ -130,7 +91,7 @@ require_once 'admin/config/koneksi.php';
                </div>
             </div>
               </div>
-              <?php } ?>
+            <?php endforeach; ?>
             </div>
           </div>
     </div>

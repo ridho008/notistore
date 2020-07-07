@@ -52,6 +52,7 @@ function ubah_produk($data) {
 	$nama_produk = htmlspecialchars($data['nama_produk']);
 	$harga_produk = htmlspecialchars($data['harga_produk']);
 	$berat_produk = htmlspecialchars($data['berat_produk']);
+	$stok_produk = htmlspecialchars($data['stok']);
 	$deskripsi_produk = htmlspecialchars($data['deskripsi_produk']);
 	$foto_produk_lama = $data['foto_produk_lama'];
 
@@ -62,7 +63,7 @@ function ubah_produk($data) {
 		$foto_produk = upload_foto_produk();
 	}
 
-	$query = $conn->query("UPDATE tb_produk SET nama_produk = '$nama_produk', harga_produk = '$harga_produk', berat_produk = '$berat_produk', foto_produk = '$foto_produk', deskripsi_produk = '$deskripsi_produk' WHERE id_produk = $id") or die(mysqli_error($conn));
+	$query = $conn->query("UPDATE tb_produk SET nama_produk = '$nama_produk', harga_produk = '$harga_produk', berat_produk = '$berat_produk', foto_produk = '$foto_produk', deskripsi_produk = '$deskripsi_produk', stok_produk = '$stok_produk' WHERE id_produk = $id") or die(mysqli_error($conn));
 	return mysqli_affected_rows($conn);
 	
 }
