@@ -40,6 +40,7 @@
               	<td>
               		<a href="index.php?p=hapusproduk&id=<?= $row['id_produk']; ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ?')">Hapus</a>
               		<a href="index.php?p=ubahproduk&id=<?= $row['id_produk']; ?>" class="btn btn-info btn-sm">Ubah</a>
+                  <a href="index.php?p=detailproduk&id=<?= $row['id_produk']; ?>" class="btn btn-success btn-sm">Detail</a>
               	</td>
               </tr>
               <?php } ?>

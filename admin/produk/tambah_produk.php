@@ -6,26 +6,56 @@ if(isset($_POST['tambah_produk'])) {
 	$berat_produk = htmlspecialchars($_POST['berat_produk']);
 	$deskripsi_produk = htmlspecialchars($_POST['deskripsi_produk']);
 	$stok_produk = htmlspecialchars($_POST['stok']);
-	$nama_foto = $_FILES['foto_produk']['name'];
-	$lokasi_foto = $_FILES['foto_produk']['tmp_name'];
+
+	$nama_foto_all = $_FILES['foto_produk']['name'];
+	$lokasi_foto_all = $_FILES['foto_produk']['tmp_name'];
 	
-	$ektensiGambar = explode('.', $nama_foto);
-	$ektensiGambar = strtolower(end($ektensiGambar));
+	// $ektensiGambar = $nama_foto_all;
+	// $ektensiGambar = strtolower($ektensiGambar);
 
 	// generate nama foto
-	$namaFileBaru = uniqid();
-	$namaFileBaru .= '.';
-	$namaFileBaru .= $ektensiGambar;
+	// $namaFileBaru = uniqid();
+	// $namaFileBaru .= '.';
+	// $namaFileBaru .= $nama_foto_all;
+	// cek upload gambar
+	// $ektensi = $_FILES['foto_produk']['name'];
+	// generate nama gambar baru
+	// $gambar = uniqid() . end($ektensi);
+	// $sumber = $_FILES['foto_produk']['tmp_name'];
 
-	move_uploaded_file($lokasi_foto, '../gambar/produk/' . $namaFileBaru);	
+	move_uploaded_file($lokasi_foto_all[0], '../gambar/produk/' . $nama_foto_all[0]);	
 
-	$query = $conn->query("INSERT INTO tb_produk (id_kategori, nama_produk, harga_produk, berat_produk, foto_produk, deskripsi_produk, stok_produk) VALUES ('$kategori_produk', '$nama_produk', '$harga_produk', '$berat_produk', '$namaFileBaru', '$deskripsi_produk', '$stok_produk')") or die(mysqli_error($conn));
+	if(empty($kategori_produk)) {
+		echo "<script>alert('Pilih kategori dulu.');window.location='index.php?p=tambah_produk';</script>";
+	}
+
+	$query = $conn->query("INSERT INTO tb_produk (id_kategori, nama_produk, harga_produk, berat_produk, foto_produk, deskripsi_produk, stok_produk) VALUES ('$kategori_produk', '$nama_produk', '$harga_produk', '$berat_produk', '$nama_foto_all[0]', '$deskripsi_produk', '$stok_produk')") or die(mysqli_error($conn));
+
+	// mendapatkan id_produk barusan
+	$id_produk_barusan = $conn->insert_id;
+
+	foreach($nama_foto_all as $key => $tiap_nama) {
+		$tiap_lokasi = $lokasi_foto_all[$key];
+
+		// $ektensi = $nama_foto_all;
+		// $gambar = uniqid() . end($ektensi);
+		// $sumber = $_FILES['foto_produk']['tmp_name'];
+		move_uploaded_file($tiap_lokasi, '../gambar/produk/' . $tiap_nama);
+
+		// simpan ke db (tapi perlu tau id_produknya berapa?)
+		$conn->query("INSERT INTO tb_produk_foto (id_produk, nama_produk_foto) VALUES ('$id_produk_barusan', '$tiap_nama')") or die(mysqli_error($conn));
+	}
+
 	if($query) {
 		echo "<script>alert('Data Produk Berhasil Ditambahkan.');window.location='index.php?p=produk';</script>";
 	} else {
 		echo "<script>alert('Data Produk Gagal Ditambahkan.');window.location='index.php?p=tambah_produk';</script>";
 	}
 	return $namaFileBaru;
+
+	echo "<pre>";
+	var_dump($_FILES['foto_produk']);
+	echo "</pre>";
 }  
 
 // menampilkan kategori
@@ -72,10 +102,11 @@ while ($pecah = $ambil->fetch_assoc()) {
 				<label>Berat (KG)</label>
 				<input type="number" class="form-control" name="berat_produk" placeholder="Masukan berat produk" required>
 			</div>
-			<div class="form-group">
-				<label>Foto (Klik Tulisan Foto)</label>
-				<input type="file" class="form-control" name="foto_produk" required>
+			<label>Foto (Klik Tulisan Foto)</label>
+			<div class="letak-input">
+				<input type="file" class="mb-1" name="foto_produk[]" required>
 			</div>
+			<button type="button" class="btn btn-danger" id="tombol"><i class="fa fa-plus"></i></button>
 			<div class="form-group">
 				<textarea name="deskripsi_produk" cols="60" class="form-control" rows="5" required></textarea>
 			</div>
@@ -87,3 +118,5 @@ while ($pecah = $ambil->fetch_assoc()) {
 	</div>
 </div>
 </div>
+
+

@@ -173,11 +173,11 @@ if(isset($_POST['login'])) {
 							<div class="card-body">
 								<form action="" method="post">
 									<div class="form-group">
-										<label>Username</label>
+										<label>Username/ridho008</label>
 										<input type="text" class="form-control" name="username" placeholder="Masukan username anda" autofocus="on" required>
 									</div>
 									<div class="form-group">
-										<label>Password</label>
+										<label>Password/ridho008</label>
 										<input type="password" class="form-control" name="password" placeholder="Masukan password anda" required>
 									</div>
                   <div class="custom-control custom-checkbox">

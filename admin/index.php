@@ -63,6 +63,8 @@ if(!isset($_GET['p'])) {
         echo "Laporan Pembelian | Noti Store";
       } else if($_GET['p'] == 'kategori') {
         echo "Kategori Produk | Noti Store";
+      } else if($_GET['p'] == 'detailproduk') {
+        echo "Detail Produk | Noti Store";
       } 
     }
     ?>
@@ -256,6 +258,8 @@ if(!isset($_GET['p'])) {
                 echo "<a class='navbar-brand' href=''>Laporan Pembelian</a>";
               } else if($_GET['p'] == 'kategori') {
                 echo "<a class='navbar-brand' href=''>Kategori Produk</a>";
+              } else if($_GET['p'] == 'detailproduk') {
+                echo "<a class='navbar-brand' href=''>Detail Produk</a>";
               } 
             }             ?>
             <!-- <a class="navbar-brand" href="javascript:;">Dashboard</a> -->
@@ -332,6 +336,10 @@ if(!isset($_GET['p'])) {
                 require_once 'laporan/laporan_pembelian.php';
               } else if($_GET['p'] == 'kategori') {
                 require_once 'kategori/kategori.php';
+              } else if($_GET['p'] == 'detailproduk') {
+                require_once 'produk/detailproduk.php';
+              } else if($_GET['p'] == 'hapusfotoproduk') {
+                require_once 'produk/hapusfotoproduk.php';
               }
             } 
             ?>
@@ -339,7 +347,7 @@ if(!isset($_GET['p'])) {
           </div>
         </div>
       </div>
-      <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
+      <!-- <footer class="footer" style="position: absolute; bottom: 0; width: -webkit-fill-available;">
         <div class="container-fluid mt-5">
           <div class="row">
             <nav class="footer-nav">
@@ -356,18 +364,26 @@ if(!isset($_GET['p'])) {
             </div>
           </div>
         </div>
-      </footer>
+      </footer> -->
     </div>
   </div>
   <!--   Core JS Files   -->
-  <script src="./assets/js/core/jquery.min.js"></script>
+  <script src="./assets/js/jquery-3.5.1.js"></script>
+  <script>
+    $(document).ready(function() {
+      $('#tombol').click(function() {
+        $('.letak-input').append("<input type='file' class='mb-1' name='foto_produk[]'>");
+      }); 
+    });
+  </script>
+  <!-- <script src="./assets/js/core/jquery.min.js"></script> -->
   <script src="./assets/js/core/popper.min.js"></script>
   <script src="./assets/js/core/bootstrap.min.js"></script>
-  <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+  <!-- <script src="./assets/js/plugins/perfect-scrollbar.jquery.min.js"></script> -->
   <!--  Google Maps Plugin    -->
-  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+  <!-- <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script> -->
   <!-- Chart JS -->
-  <script src="./assets/js/plugins/chartjs.min.js"></script>
+  <!-- <script src="./assets/js/plugins/chartjs.min.js"></script> -->
   <!--  Notifications Plugin    -->
   <script src="./assets/js/plugins/bootstrap-notify.js"></script>
   <!-- Control Center for Now Ui Dashboard: parallax effects, scripts for the example pages etc -->
