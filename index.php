@@ -99,11 +99,11 @@ require_once 'admin/config/koneksi.php';
       ?>
       <div class="col-md-3">
             <div class="card card-user">
-              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produks']; ?>" alt="Card image cap">
+              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produk']; ?>" alt="Card image cap">
               <div class="card-body">
                 <div class="author">
                 <a href="#">
-                    <img class="avatar border-gray" src="gambar/Profiles.jpg" alt="...">
+                    <img class="avatar border-gray" src="gambar/Profile.jpg" alt="...">
                     <h5 class="title"><?= $row['nama_produk']; ?></h5>
                   </a>
                 <p class="card-text"><?= $row['deskripsi_produk']; ?></p>

@@ -37,6 +37,10 @@ if(isset($_POST['tambah_produk'])) {
 	foreach($nama_foto_all as $key => $tiap_nama) {
 		$tiap_lokasi = $lokasi_foto_all[$key];
 
+		if($nama_foto_all == $tiap_nama) {
+			rand(00000000, 99999999);
+		}
+
 		// $ektensi = $nama_foto_all;
 		// $gambar = uniqid() . end($ektensi);
 		// $sumber = $_FILES['foto_produk']['tmp_name'];
