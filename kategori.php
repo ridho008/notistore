@@ -2,22 +2,25 @@
 session_start();
 require_once 'admin/config/koneksi.php';
 
-// menampilkan semua kategori
-$semuaKategori = [];
-$kategori = mysqli_query($conn, "SELECT * FROM tb_kategori ORDER BY nama_kategori") or die(mysqli_error($conn));
-while ($pecahKategori = mysqli_fetch_assoc($kategori)) {
-  $semuaKategori[] = $pecahKategori;
+// ambil url id_kategori di url
+$id_kategori = $_GET['idk'];
+// ambil url id_produk di url
+$id_produk = $_GET['idp'];
+
+$semuaKId = [];
+$tampilKategoriId = mysqli_query($conn, "SELECT * FROM tb_kategori JOIN tb_produk ON tb_kategori.id_kategori = tb_produk.id_kategori WHERE tb_produk.id_kategori = $id_kategori") or die(mysqli_error($conn));
+while ($pecahKId = mysqli_fetch_assoc($tampilKategoriId)) {
+  $semuaKId[] = $pecahKId;
 }
 
-$produk = mysqli_query($conn, "SELECT * FROM tb_produk") or die(mysqli_error($conn));
-$pecahProduk = mysqli_fetch_assoc($produk);
-
-// mengacak warna di tombol kategori
-$rand = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f');
-$color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)];
+$kategoriTag = mysqli_query($conn, "SELECT * FROM tb_kategori WHERE id_kategori = $id_kategori") or die(mysqli_error($conn));
+$pecahKTag = mysqli_fetch_assoc($kategoriTag);
 
 
 ?>
+<!-- <pre>
+  <?php var_dump($semuaKId); ?>
+</pre> -->
 <!doctype html>
 <html lang="en">
   <head>
@@ -106,34 +109,23 @@ $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,
        End Navbar -->
 
   <div class="content">
+      <h4>Kategori : <?= $pecahKTag['nama_kategori']; ?></h4>
     <div class="row">
-      <div class="col-md-12 text-center">
-        <h6>Kategori Produk</h6>
-        <hr style="width:120px;">
-        <?php foreach($semuaKategori as $key => $value) : ?>
-        <a href="kategori.php?idk=<?= $value['id_kategori']; ?>&idp=<?= $pecahProduk['id_produk']; ?>" style="background: <?php echo $color; ?>;" class="btn btn-info"><?= $value['nama_kategori']; ?></a>
-        <?php endforeach; ?>
-      </div>
-    </div>
-    <div class="row">
-      <?php 
-      $result = $conn->query("SELECT * FROM tb_produk") or die(mysqli_error($conn));
-      while($row = $result->fetch_assoc()) {
-      ?>
+      <?php foreach($semuaKId as $key => $value) : ?>
       <div class="col-md-3">
             <div class="card card-user">
-              <img class="card-img-top" src="gambar/produk/<?= $row['foto_produk']; ?>" alt="Card image cap">
+              <img class="card-img-top" src="gambar/produk/<?= $value['foto_produk']; ?>" alt="Card image cap">
               <div class="card-body">
                 <div class="author">
-                <a href="detail.php?id=<?= $row['id_produk']; ?>">
+                <a href="detail.php?id=<?= $value['id_produk']; ?>">
                     <img class="avatar border-gray" src="gambar/Profile.jpg" alt="...">
-                    <h5 class="title"><?= $row['nama_produk']; ?></h5>
+                    <h5 class="title"><?= $value['nama_produk']; ?></h5>
                   </a>
-                <p class="card-text"><?= $row['deskripsi_produk']; ?></p>
+                <p class="card-text"><?= $value['deskripsi_produk']; ?></p>
                 </div>
                 <div class="col-md text-center">
                   <btn class="btn btn-sm btn-outline-success btn-round btn-icon"><i class="nc-icon nc-tag-content"></i></btn>
-                  <span class="text-muted"><small>Rp.<?= number_format($row['harga_produk']); ?></small></span>
+                  <span class="text-muted"><small>Rp.<?= number_format($value['harga_produk']); ?></small></span>
                 </div>
                 <div class="col-md-3 col-3 text-right">
                         
@@ -144,8 +136,8 @@ $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,
                 <div class="button-container">
                   <div class="row">
                     <div class="ml-auto mr-auto">
-                      <a href="beli.php?id=<?= $row['id_produk']; ?>" class="btn btn-primary mt-1"><i class="nc-icon nc-cart-simple"></i> Beli</a>
-                      <a href="detail.php?id=<?= $row['id_produk']; ?>" class="btn btn-secondary mt-1"><i class="nc-icon nc-cart-simple"></i> Detail</a>
+                      <a href="beli.php?id=<?= $value['id_produk']; ?>" class="btn btn-primary mt-1"><i class="nc-icon nc-cart-simple"></i> Beli</a>
+                      <a href="detail.php?id=<?= $value['id_produk']; ?>" class="btn btn-secondary mt-1"><i class="nc-icon nc-cart-simple"></i> Detail</a>
                     </div>
                   </div>
                 </div>
@@ -153,7 +145,7 @@ $color = '#'.$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,15)].$rand[rand(0,
                </div>
             </div>
               </div>
-              <?php } ?>
+            <?php endforeach; ?>
             </div>
           </div>
     </div>
