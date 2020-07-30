@@ -18,8 +18,8 @@ $detail = $detailPembelian->fetch_assoc();
           <div class="col-md-4">
             <h5>Pembelian</h5>
             <p>
-              Tanggal : <?= $detail['tgl_pembelian']; ?><br>
-              Total : <?= $detail['total_pembelian'] ?><br>
+              Tanggal : <?= date('d F Y', strtotime($detail['tgl_pembelian'])); ?><br>
+              Total : <?= number_format($detail['total_pembelian']); ?><br>
               Status : <?= $detail['status_pembelian']; ?>
             </p>
           </div>
@@ -33,11 +33,10 @@ $detail = $detailPembelian->fetch_assoc();
           </div>
           <div class="col-md-4">
             <h5>Pengiriman</h5>
-            <b><?= $detail['nama_kota']; ?></b><br>
-            <p>
-              Tarif : Rp. <?= number_format($detail['tarif']); ?><br>
-              Alamat : <?= $detail['alamat_pengiriman']; ?> 
-            </p>
+            <p class="card-title"><?= $detail['tipe']; ?>, <?= $detail['distrik']; ?>, <?= $detail['provinsi']; ?></p>
+                    <p class="card-title">Ongkos Kirim : Rp. <?= $detail['ongkir'] ?></p>
+                    <p class="card-title">Ekspedisi : <?= $detail['ekspedisi']; ?>, <?= $detail['paket']; ?>, <?= $detail['estimasi']; ?></p>
+                    <p class="card-title">Alamat : Rp. <?= $detail['alamat_pengiriman'] ?></p>
           </div>
         </div>
       </div>

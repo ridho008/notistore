@@ -29,9 +29,9 @@
               <tr>
               	<td><?= $no++; ?></td>
               	<td><?= $row['nama_pelanggan']; ?></td>
-              	<td><?= $row['tgl_pembelian']; ?></td>
+              	<td><?= date('d F Y', strtotime($row['tgl_pembelian'])); ?></td>
                 <td><?= $row['status_pembelian']; ?></td>
-              	<td><?= $row['total_pembelian']; ?></td>
+              	<td><?= number_format($row['total_pembelian']); ?></td>
               	<td>
               		<a href="index.php?p=detail&id=<?= $row['id_pembelian'] ?>" class="btn btn-info btn-sm">Details</a>
                   <!-- jika user sudah mengirim buktu pembayaran -->

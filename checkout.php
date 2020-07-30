@@ -68,6 +68,7 @@ if(empty($_SESSION['keranjang'])) {
                   <tbody>
                     <?php 
                     $totalbelanja = 0;
+                    $totalBerat = 0;
                     foreach($keranjang as $id_produk => $jumlah) : ?>
                     <!-- menampilkan produk yg sedang di perulangkan berdasarkan id_produk -->
                     <?php 
@@ -77,6 +78,10 @@ if(empty($_SESSION['keranjang'])) {
                     // harga di kali dengan jumlah barang yang di beli
                     $subharga = $row['harga_produk'] * $jumlah;
                     // var_dump($row);
+                    // subharga diperoleh dari berat produk x jumlah
+                    $subberat = $row['berat_produk'] * $jumlah;
+                    $totalBerat += $subberat;
+
                     ?>
                     <tr>
                       <td><?= $no; ?></td>
@@ -109,7 +114,7 @@ if(empty($_SESSION['keranjang'])) {
                     <input type="text" readonly="" value="<?= $_SESSION['pelanggan']['telepon_pelanggan'] ?>" class="form-control">
                   </div>
               </div>
-              <div class="col-md-4 mt-3">
+              <!-- <div class="col-md-4 mt-3">
                   <div class="form-group">
                     <select name="id_ongkir" class="form-control">
                       <option value="">Pilih Ongkir</option>
@@ -121,7 +126,7 @@ if(empty($_SESSION['keranjang'])) {
                       <?php } ?>
                     </select>
                   </div>
-              </div>
+              </div> -->
               <div class="col-md-12">
                   <div class="form-group">
                     <label>Alamat Pengiriman</label>
@@ -158,7 +163,7 @@ if(empty($_SESSION['keranjang'])) {
               </div>
               <div class="col-md-12">
                 <div class="form-group">
-                  <input type="text" name="total_berat" value="1200" class="form-control">
+                  <input type="text" name="total_berat" value="<?= $totalBerat; ?>" class="form-control">
                   <input type="text" name="input_provinsi" class="form-control">
                   <input type="text" name="input_distrik" class="form-control">
                   <input type="text" name="input_tipe" class="form-control">
@@ -188,29 +193,39 @@ if(empty($_SESSION['keranjang'])) {
 // jika tombol checkout di klik
 if(isset($_POST['checkout'])) {
   $id_pelanggan = $_SESSION['pelanggan']['id_pelanggan'];
-  $id_ongkir = $_POST['id_ongkir'];
+  // $id_ongkir = $_POST['id_ongkir'];
   $tanggal_pembelian = date('Y-m-d');
   $alamat_pengiriman = $_POST['alamat_pengiriman'];
 
-  if(empty($id_ongkir)) {
-    echo "<script>alert('Pilih dulu ongkir anda.')</script>";
-    return false;
-  }
+  $totalberat = $_POST['total_berat'];
+  $provinsi = $_POST['input_provinsi'];
+  $distrik = $_POST['input_distrik'];
+  $tipe = $_POST['input_tipe'];
+  $kodepos = $_POST['input_kodepos'];
+  $ekpedisi = $_POST['input_ekspedisi'];
+  $paket = $_POST['input_paket'];
+  $ongkir = $_POST['input_ongkir'];
+  $estimasi = $_POST['input_estimasi'];
+
+  // if(empty($id_ongkir)) {
+  //   echo "<script>alert('Pilih dulu ongkir anda.')</script>";
+  //   return false;
+  // }
 
   if(empty($alamat_pengiriman)) {
     echo "<script>alert('Isi alamat lengkap anda dulu.')</script>";
     return false;
   }
 
-  $ambilOngkir = $conn->query("SELECT * FROM tb_ongkir WHERE id_ongkir = '$id_ongkir'") or die(mysqli_error($conn));
-  $pecah = $ambilOngkir->fetch_assoc();
-  $nama_kota = $pecah['nama_kota'];
-  $tarif = $pecah['tarif'];
+  // $ambilOngkir = $conn->query("SELECT * FROM tb_ongkir WHERE id_ongkir = '$id_ongkir'") or die(mysqli_error($conn));
+  // $pecah = $ambilOngkir->fetch_assoc();
+  // $nama_kota = $pecah['nama_kota'];
+  // $tarif = $pecah['tarif'];
 
-  $total_pembelian = $totalbelanja + $tarif;
+  $total_pembelian = $totalbelanja + $ongkir;
 
   // menynimpan data ke tabel pembelian
-  $conn->query("INSERT INTO tb_pembelian (id_pelanggan, id_ongkir, tgl_pembelian, total_pembelian, nama_kota, tarif, alamat_pengiriman) VALUES('$id_pelanggan', '$id_ongkir', '$tanggal_pembelian', '$total_pembelian', '$nama_kota', '$tarif', '$alamat_pengiriman')") or die(mysqli_error($conn));
+  $conn->query("INSERT INTO tb_pembelian (id_pelanggan, tgl_pembelian, total_pembelian, alamat_pengiriman, resi_pengiriman, totalberat, provinsi, distrik, tipe, kodepos, ekspedisi, paket, ongkir, estimasi) VALUES('$id_pelanggan', '$tanggal_pembelian', '$total_pembelian', '$alamat_pengiriman', '0', '$totalberat', '$provinsi', '$distrik', '$tipe', '$kodepos', '$ekpedisi', '$paket', '$ongkir', '$estimasi')") or die(mysqli_error($conn));
 
   // mendapatkan id_pembelian barusan terjadi
   $id_pembelian_barusan = $conn->insert_id;

@@ -95,8 +95,9 @@ if(!isset($_SESSION['pelanggan'])) {
                     <div class="card-header">
                       <h4 class="card-title">Pengiriman</h4>
                       <hr>
-                    <h6 class="card-title"><?= $detail['nama_kota'] ?></h6>
-                    <h6 class="card-title">Ongkos Kirim : Rp. <?= $detail['tarif'] ?></h6>
+                    <h6 class="card-title"><?= $detail['tipe']; ?>, <?= $detail['distrik']; ?>, <?= $detail['provinsi']; ?></h6>
+                    <h6 class="card-title">Ongkos Kirim : Rp. <?= $detail['ongkir'] ?></h6>
+                    <h6 class="card-title">Ekspedisi : <?= $detail['ekspedisi']; ?>, <?= $detail['paket']; ?>, <?= $detail['estimasi']; ?></h6>
                     <h6 class="card-title">Alamat : Rp. <?= $detail['alamat_pengiriman'] ?></h6>
                     <!-- <h6 class="card-title">Ongkos Kirim : <?= $detail['tarif'] ?>, Pengiriman <?= $detail['nama_kota'] ?> </h6>
                     <h6 class="card-title">Total : <?= number_format($detail['total_pembelian']); ?></h5> -->
